@@ -1,9 +1,19 @@
 const form = document.querySelector("#registrar");
 const input = form.querySelector("input");
 const ul = document.getElementById("invitedList");
+const div = document.createElement("div");
+const main = document.querySelector(".main");
+const filterLabel = document.createElement("label");
+const filterCheckbox = document.createElement("input");
+
+div.append(filterLabel);
+div.append(filterCheckbox);
+main.insertBefore(div, ul);
+filterLabel.textContent = "Hide those who have not responded.";
+filterCheckbox.type = "checkbox";
 
 function createLI(text) {
-  var li = document.createElement("li");
+  let li = document.createElement("li");
   let span = document.createElement("span");
   span.textContent = text;
   li.append(span);
@@ -20,6 +30,7 @@ function createLI(text) {
   let removeButton = document.createElement("button");
   removeButton.textContent = "Remove";
   li.appendChild(removeButton);
+  li.className = "not-responded";
   return li;
 }
 
@@ -40,7 +51,7 @@ ul.addEventListener("change", (e) => {
   if (checked) {
     listItem.className = "responded";
   } else {
-    listItem.className = "";
+    listItem.className = "not-responded";
   }
 });
 
@@ -65,6 +76,22 @@ ul.addEventListener("click", (e) => {
       li.insertBefore(span, textInput);
       li.removeChild(textInput);
       button.textContent = "Edit";
+    }
+  }
+});
+
+div.addEventListener("change", (e) => {
+  const checkbox = e.target;
+  const checked = checkbox.checked;
+  const notResponded = document.querySelectorAll(".not-responded");
+  if (checked) {
+    console.log("Checked");
+    for (i = 0; i < notResponded.length; i++) {
+      notResponded[i].style.display = "none";
+    }
+  } else {
+    for (i = 0; i < notResponded.length; i++) {
+      notResponded[i].style.display = "";
     }
   }
 });
